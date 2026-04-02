@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import PillGauge from "@/components/PillGauge";
 import LastDoseCard from "@/components/LastDoseCard";
 import AdherenceStatus from "@/components/AdherenceStatus";
 import ScheduleSettings from "@/components/ScheduleSettings";
 import ImageGallery from "@/components/ImageGallery";
 import ApiDocs from "@/components/ApiDocs";
-import { Activity } from "lucide-react";
+import { Activity, User, LogOut } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [lastLog, setLastLog] = useState<{ taken_amount: number; remaining_pills: number; timestamp: string } | null>(null);
