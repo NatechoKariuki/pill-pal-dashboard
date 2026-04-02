@@ -59,7 +59,11 @@ const ScheduleSettings = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-end gap-3">
+        <div className="flex items-end gap-3 flex-wrap">
+          <div className="space-y-1.5">
+            <Label htmlFor="medicine" className="text-xs text-muted-foreground">Medicine Name</Label>
+            <Input id="medicine" type="text" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} className="w-44 font-display text-lg" placeholder="Aspirin" />
+          </div>
           <div className="space-y-1.5">
             <Label htmlFor="hour" className="text-xs text-muted-foreground">Hours (0–23)</Label>
             <Input id="hour" type="number" min={0} max={23} value={hour} onChange={(e) => setHour(e.target.value)} className="w-20 text-center font-display text-lg" placeholder="08" />
