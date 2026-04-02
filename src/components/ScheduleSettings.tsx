@@ -38,9 +38,9 @@ const ScheduleSettings = () => {
     setLoading(true);
     try {
       if (scheduleId) {
-        await supabase.from("schedule").update({ scheduled_hour: h, scheduled_minute: m }).eq("id", scheduleId);
+        await supabase.from("schedule").update({ scheduled_hour: h, scheduled_minute: m, medicine_name: medicineName }).eq("id", scheduleId);
       } else {
-        const { data } = await supabase.from("schedule").insert({ scheduled_hour: h, scheduled_minute: m }).select().single();
+        const { data } = await supabase.from("schedule").insert({ scheduled_hour: h, scheduled_minute: m, medicine_name: medicineName }).select().single();
         if (data) setScheduleId(data.id);
       }
       toast({ title: "Schedule saved", description: `Medication time set to ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}` });
