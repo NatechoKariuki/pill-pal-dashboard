@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 const ScheduleSettings = () => {
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
+  const [medicineName, setMedicineName] = useState("");
   const [loading, setLoading] = useState(false);
   const [scheduleId, setScheduleId] = useState<string | null>(null);
   const { toast } = useToast();
