@@ -21,6 +21,7 @@ const ScheduleSettings = () => {
       if (data) {
         setHour(String(data.scheduled_hour));
         setMinute(String(data.scheduled_minute).padStart(2, "0"));
+        setMedicineName(data.medicine_name || "");
         setScheduleId(data.id);
       }
     };
