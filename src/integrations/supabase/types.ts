@@ -39,6 +39,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          medicine_name: string
           scheduled_hour: number
           scheduled_minute: number
           updated_at: string
@@ -46,6 +47,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          medicine_name?: string
           scheduled_hour: number
           scheduled_minute: number
           updated_at?: string
@@ -53,6 +55,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          medicine_name?: string
           scheduled_hour?: number
           scheduled_minute?: number
           updated_at?: string
