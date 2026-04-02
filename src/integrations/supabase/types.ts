@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pill_logs: {
+        Row: {
+          id: string
+          remaining_pills: number
+          taken_amount: number
+          timestamp: string
+        }
+        Insert: {
+          id?: string
+          remaining_pills?: number
+          taken_amount?: number
+          timestamp?: string
+        }
+        Update: {
+          id?: string
+          remaining_pills?: number
+          taken_amount?: number
+          timestamp?: string
+        }
+        Relationships: []
+      }
+      schedule: {
+        Row: {
+          created_at: string
+          id: string
+          scheduled_hour: number
+          scheduled_minute: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          scheduled_hour: number
+          scheduled_minute: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          scheduled_hour?: number
+          scheduled_minute?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
