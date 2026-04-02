@@ -52,13 +52,23 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border/50 bg-card/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-            <Activity className="w-5 h-5 text-primary-foreground" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+              <Activity className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-lg font-display font-bold text-foreground">MedDispenser</h1>
+              <p className="text-xs text-muted-foreground">Smart Pill Dispenser Dashboard</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-display font-bold text-foreground">MedDispenser</h1>
-            <p className="text-xs text-muted-foreground">Smart Pill Dispenser Dashboard</p>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/profile")} title="Profile">
+              <User className="w-5 h-5" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
+              <LogOut className="w-5 h-5" />
+            </Button>
           </div>
         </div>
       </header>
