@@ -13,6 +13,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
   const [lastLog, setLastLog] = useState<{ taken_amount: number; remaining_pills: number; timestamp: string } | null>(null);
   const [scheduleHour, setScheduleHour] = useState<number | null>(null);
   const [scheduleMinute, setScheduleMinute] = useState<number | null>(null);
