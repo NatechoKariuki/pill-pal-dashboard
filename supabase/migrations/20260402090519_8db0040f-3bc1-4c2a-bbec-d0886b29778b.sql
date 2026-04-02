@@ -1,0 +1,1 @@
+ALTER TABLE public.schedule ADD COLUMN medicine_name TEXT NOT NULL DEFAULT '';
