@@ -3,11 +3,15 @@ import { Code, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-const ApiDocs = () => {
+interface ApiDocsProps {
+  dispenserId?: string;
+}
+
+const ApiDocs = ({ dispenserId }: ApiDocsProps) => {
   const { toast } = useToast();
-  const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "<YOUR_PROJECT_ID>";
   const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "<YOUR_ANON_KEY>";
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || `https://${projectId}.supabase.co`;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "<YOUR_SUPABASE_URL>";
+  const dispId = dispenserId || "<DISPENSER_ID>";
 
   const postLogSnippet = `// ESP32 Arduino — POST pill log
 #include <HTTPClient.h>
@@ -18,7 +22,7 @@ http.addHeader("apikey", "${anonKey}");
 http.addHeader("Content-Type", "application/json");
 http.addHeader("Prefer", "return=minimal");
 
-String payload = "{\\"taken_amount\\":1,\\"remaining_pills\\":25}";
+String payload = "{\\"taken_amount\\":1,\\"remaining_pills\\":25,\\"dispenser_id\\":\\"${dispId}\\"}";
 int code = http.POST(payload);
 http.end();`;
 
@@ -38,9 +42,9 @@ http.addHeader("Content-Type", "image/jpeg");
 int code = http.POST(fb->buf, fb->len);
 http.end();`;
 
-  const fetchScheduleSnippet = `// ESP32 Arduino — Fetch schedule
+  const fetchScheduleSnippet = `// ESP32 Arduino — Fetch schedule for this dispenser
 HTTPClient http;
-http.begin("${supabaseUrl}/rest/v1/schedule?select=*&limit=1");
+http.begin("${supabaseUrl}/rest/v1/schedule?dispenser_id=eq.${dispId}&limit=1");
 http.addHeader("apikey", "${anonKey}");
 
 int code = http.GET();
@@ -76,7 +80,7 @@ http.end();`;
       </CardHeader>
       <CardContent className="space-y-6">
         <p className="text-sm text-muted-foreground">
-          Use these snippets in your ESP32 Arduino sketch to communicate with the dashboard.
+          Use these snippets in your ESP32 Arduino sketch. The dispenser ID links data to this patient.
         </p>
         <CodeBlock title="1. Post a Pill Log" code={postLogSnippet} />
         <CodeBlock title="2. Upload Camera Image" code={uploadImageSnippet} />

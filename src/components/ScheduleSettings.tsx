@@ -7,7 +7,11 @@ import { Settings, Save } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const ScheduleSettings = () => {
+interface ScheduleSettingsProps {
+  dispenserId?: string;
+}
+
+const ScheduleSettings = ({ dispenserId }: ScheduleSettingsProps) => {
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [medicineName, setMedicineName] = useState("");
@@ -17,7 +21,9 @@ const ScheduleSettings = () => {
 
   useEffect(() => {
     const fetchSchedule = async () => {
-      const { data } = await supabase.from("schedule").select("*").limit(1).maybeSingle();
+      let query = supabase.from("schedule").select("*").limit(1);
+      if (dispenserId) query = query.eq("dispenser_id", dispenserId);
+      const { data } = await query.maybeSingle();
       if (data) {
         setHour(String(data.scheduled_hour));
         setMinute(String(data.scheduled_minute).padStart(2, "0"));
@@ -26,7 +32,7 @@ const ScheduleSettings = () => {
       }
     };
     fetchSchedule();
-  }, []);
+  }, [dispenserId]);
 
   const handleSave = async () => {
     const h = parseInt(hour);
@@ -37,10 +43,13 @@ const ScheduleSettings = () => {
     }
     setLoading(true);
     try {
+      const payload: any = { scheduled_hour: h, scheduled_minute: m, medicine_name: medicineName };
+      if (dispenserId) payload.dispenser_id = dispenserId;
+
       if (scheduleId) {
-        await supabase.from("schedule").update({ scheduled_hour: h, scheduled_minute: m, medicine_name: medicineName }).eq("id", scheduleId);
+        await supabase.from("schedule").update(payload).eq("id", scheduleId);
       } else {
-        const { data } = await supabase.from("schedule").insert({ scheduled_hour: h, scheduled_minute: m, medicine_name: medicineName }).select().single();
+        const { data } = await supabase.from("schedule").insert(payload).select().single();
         if (data) setScheduleId(data.id);
       }
       toast({ title: "Schedule saved", description: `Medication time set to ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}` });
@@ -78,7 +87,7 @@ const ScheduleSettings = () => {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Your ESP32 can fetch this schedule via the Supabase REST API to sync dispenser timing.
+          Your ESP32 can fetch this schedule via the REST API to sync dispenser timing.
         </p>
       </CardContent>
     </Card>

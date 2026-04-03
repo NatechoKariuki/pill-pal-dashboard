@@ -14,26 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
+      dispensers: {
+        Row: {
+          auth_token: string
+          created_at: string
+          device_name: string
+          id: string
+          patient_id: string
+        }
+        Insert: {
+          auth_token?: string
+          created_at?: string
+          device_name?: string
+          id?: string
+          patient_id: string
+        }
+        Update: {
+          auth_token?: string
+          created_at?: string
+          device_name?: string
+          id?: string
+          patient_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispensers_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          age: number
+          caregiver_id: string
+          condition: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          age: number
+          caregiver_id: string
+          condition?: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          age?: number
+          caregiver_id?: string
+          condition?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pill_logs: {
         Row: {
+          dispenser_id: string | null
           id: string
           remaining_pills: number
           taken_amount: number
           timestamp: string
         }
         Insert: {
+          dispenser_id?: string | null
           id?: string
           remaining_pills?: number
           taken_amount?: number
           timestamp?: string
         }
         Update: {
+          dispenser_id?: string | null
           id?: string
           remaining_pills?: number
           taken_amount?: number
           timestamp?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "pill_logs_dispenser_id_fkey"
+            columns: ["dispenser_id"]
+            isOneToOne: false
+            referencedRelation: "dispensers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -74,6 +147,7 @@ export type Database = {
       schedule: {
         Row: {
           created_at: string
+          dispenser_id: string | null
           id: string
           medicine_name: string
           scheduled_hour: number
@@ -82,6 +156,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          dispenser_id?: string | null
           id?: string
           medicine_name?: string
           scheduled_hour: number
@@ -90,13 +165,22 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          dispenser_id?: string | null
           id?: string
           medicine_name?: string
           scheduled_hour?: number
           scheduled_minute?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "schedule_dispenser_id_fkey"
+            columns: ["dispenser_id"]
+            isOneToOne: false
+            referencedRelation: "dispensers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
